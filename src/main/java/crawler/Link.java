@@ -8,13 +8,19 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 public class Link {
     public static Link toLink(final String rawUrl) {
-        return new Link(toUrl(rawUrl));
+        return toLink(rawUrl, 0);
+    }
+
+    public static Link toLink(final String rawUrl, final int depth) {
+        return new Link(toUrl(rawUrl), 0);
     }
 
     private final URL url;
+    public final int depth;
 
-    public Link(final URL url) {
+    public Link(final URL url, final int depth) {
         this.url = url;
+        this.depth = depth;
     }
 
     public boolean onSameDomainAs(final Link other) {

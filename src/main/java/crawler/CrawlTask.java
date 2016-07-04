@@ -13,16 +13,21 @@ public class CrawlTask extends RecursiveAction {
     private final CrawlReporter reporter;
     private Downloader downloader;
     private CrawlerLogger log;
+    private int depthToCrawlTo;
 
-    public CrawlTask(final Link link, final CrawlReporter reporter, final Downloader downloader, final CrawlerLogger log) {
+    public CrawlTask(final Link link, final CrawlReporter reporter, final Downloader downloader, final CrawlerLogger log, final int depthToCrawlTo) {
         this.link = link;
         this.reporter = reporter;
         this.downloader = downloader;
         this.log = log;
+        this.depthToCrawlTo = depthToCrawlTo;
     }
 
     @Override protected void compute() {
         if (reporter.hasCrawled(link)) {
+            return;
+        }
+        if (link.depth > depthToCrawlTo) {
             return;
         }
         log.crawling(id, link);
@@ -41,7 +46,7 @@ public class CrawlTask extends RecursiveAction {
         final Set<CrawlTask> tasks = page.getLinksFromTagsOfType("a").stream()
                 .filter(reporter::notYetCrawled)
                 .filter(link::onSameDomainAs)
-                .map(link -> new CrawlTask(link, reporter, downloader, log))
+                .map(link -> new CrawlTask(link, reporter, downloader, log, depthToCrawlTo))
                 .collect(toSet());
         invokeAll(tasks);
     }

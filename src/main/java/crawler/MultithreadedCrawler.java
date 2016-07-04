@@ -19,24 +19,25 @@ public class MultithreadedCrawler {
         this.logger = logger;
     }
 
-    public void startCrawlingFrom(final Link startLink) {
+    public void startCrawlingFrom(final Link startLink, int depthToCrawlTo) {
         ForkJoinPool pool = new ForkJoinPool(PARALLELISM, defaultForkJoinWorkerThreadFactory, null, true);
 
         reporter.seenInternal(startLink);
-        final CrawlTask seedTask = new CrawlTask(startLink, reporter, downloader, logger);
+        final CrawlTask seedTask = new CrawlTask(startLink, reporter, downloader, logger, depthToCrawlTo);
 
         pool.submit(seedTask);
         pool.awaitQuiescence(TIMEOUT, SECONDS);
     }
 
     public static void main(String[] args) throws InterruptedException {
-        if (args.length < 1) {
-            System.out.println("please give a seed URL as parameter.");
+        if (args.length < 2) {
+            System.out.println("please give a seed URL and depth to crawl to as parameters.");
             return;
         }
 
         CrawlReporter reporter = new CrawlReporter();
-        MultithreadedCrawler.createUsing(reporter).startCrawlingFrom(toLink(args[0]));
+        int depth = Integer.valueOf(args[1]);
+        MultithreadedCrawler.createUsing(reporter).startCrawlingFrom(toLink(args[0], 0), depth);
         reporter.printReport();
     }
 

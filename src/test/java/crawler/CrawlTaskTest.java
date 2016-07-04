@@ -24,7 +24,7 @@ public class CrawlTaskTest {
     private final CrawlReporter reporter = new CrawlReporter();
 
     @Test public void reportsInternalLinksAsSeenWhenScrapedFromPage() {
-        new CrawlTask(linkToCrawl, reporter, dummyDownloader(), dummyLogger()).compute();
+        new CrawlTask(linkToCrawl, reporter, dummyDownloader(), dummyLogger(),1).compute();
 
         assertThat(reporter.internalLinksSeen, containsInAnyOrder(scrapedLink1, scrapedLink2));
     }

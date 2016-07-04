@@ -25,13 +25,13 @@ public class TestSimpleCrawlerE2E {
 
     @Ignore
     @Test public void doesNotCrawlFiles() {
-        crawler.startCrawlingFrom(START_LINK);
+        crawler.startCrawlingFrom(START_LINK, 1);
 
         assertThat(reporter.crawledLinks, not(hasItem(LINK_TO_FILE)));
     }
 
     @Test public void crawlsLinksFromSameDomain() throws IOException {
-        crawler.startCrawlingFrom(START_LINK);
+        crawler.startCrawlingFrom(START_LINK, 1);
 
         assertThat(reporter.crawledLinks, hasItems(START_LINK, OTHER_INTERNAL_LINK));
     }
