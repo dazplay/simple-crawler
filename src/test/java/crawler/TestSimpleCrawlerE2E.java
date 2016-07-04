@@ -16,9 +16,8 @@ public class TestSimpleCrawlerE2E {
     private static final Link OTHER_INTERNAL_LINK = toLink("http://localhost:8181/page2.html");
 
     private final CrawlReporter reporter = new CrawlReporter();
-    private final Downloader downloader = new JsoupDownloader();
 
-    private final MultithreadedCrawler crawler = new MultithreadedCrawler(reporter, downloader);
+    private final MultithreadedCrawler crawler = MultithreadedCrawler.createUsing(reporter);
 
     @Test public void crawlsLinksFromSameDomain() throws IOException {
         crawler.startCrawlingFrom(START_LINK);

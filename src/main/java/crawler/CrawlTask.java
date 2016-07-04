@@ -21,11 +21,10 @@ public class CrawlTask extends RecursiveAction {
             return;
         }
 
-        final Page page = downloader.download(link);
+        DownloadResult result = downloader.download(link);
         reporter.reportCrawled(link);
-        submitTasksToCrawlUnseenInternalLinksOn(page);
-        reportInternalLinksSeen(page);
-
+        result.process(this::submitTasksToCrawlUnseenInternalLinksOn);
+        result.process(this::reportInternalLinksSeen);
     }
 
     private void submitTasksToCrawlUnseenInternalLinksOn(final Page page) {

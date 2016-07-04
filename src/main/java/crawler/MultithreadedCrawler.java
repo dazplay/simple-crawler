@@ -2,6 +2,7 @@ package crawler;
 
 import java.util.concurrent.ForkJoinPool;
 
+import static crawler.Link.toLink;
 import static java.util.concurrent.ForkJoinPool.defaultForkJoinWorkerThreadFactory;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -26,4 +27,15 @@ public class MultithreadedCrawler {
         pool.awaitQuiescence(TIMEOUT, SECONDS);
     }
 
+    public static void main(String[] args) throws InterruptedException {
+        MultithreadedCrawler.create().startCrawlingFrom(toLink("https://goshawkdb.io"));
+    }
+
+    private static MultithreadedCrawler create() {
+        return createUsing(new CrawlReporter());
+    }
+
+    public static MultithreadedCrawler createUsing(final CrawlReporter reporter) {
+        return new MultithreadedCrawler(reporter, new JsoupDownloader(new DisallowFilesPolicy()));
+    }
 }

@@ -1,12 +1,13 @@
 package crawler;
 
 import java.util.Set;
+import java.util.function.Consumer;
 
 import org.jsoup.Jsoup;
 
 import static java.util.stream.Collectors.toSet;
 
-public class Page {
+public class Page implements DownloadResult {
     private Link link;
     private String content;
 
@@ -22,6 +23,10 @@ public class Page {
                 .map(Link::toLink)
                 .collect(toSet());
         return linksFound;
+    }
+
+    @Override public void process(final Consumer<Page> action) {
+        action.accept(this);
     }
 
 }
