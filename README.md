@@ -15,4 +15,17 @@ The crawler should be limited to one domain. Given a starting URL – say wiprod
 The output should be a simple site map, showing links to other pages under the same domain, links to static content such as images, and to external URLs.
 
 
+## Limitations
+- Handle (ignore?) non-http/https links
+- Robots.txt handling
+- Request rate limiting
+- retry downloads
+- reporting on errors
+
+## Some design comments
+- Can refactor out of CrawlTask all the actions to perform on page. To a Set, which can have their logic independently tested.
+- Likewise for craw preconditions such as link type and depth.
+- Single threaded would have probably been sufficient and with less time taken for this exercise!
+- Some trade-offs encountered: the approach to multi-threading was a bit quick and dirty; as a result, not the best test coverage of some bits.
+
 
