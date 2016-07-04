@@ -8,7 +8,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class MultithreadedCrawler {
     public static final long TIMEOUT = 100;
-    public static final int PARALLELISM = 10;
+    public static final int PARALLELISM = 5;
     private CrawlReporter reporter;
     private Downloader downloader;
     private CrawlerLogger logger;
@@ -30,8 +30,13 @@ public class MultithreadedCrawler {
     }
 
     public static void main(String[] args) throws InterruptedException {
+        if (args.length < 1) {
+            System.out.println("please give a seed URL as parameter.");
+            return;
+        }
+
         CrawlReporter reporter = new CrawlReporter();
-        MultithreadedCrawler.createUsing(reporter).startCrawlingFrom(toLink("https://goshawkdb.io"));
+        MultithreadedCrawler.createUsing(reporter).startCrawlingFrom(toLink(args[0]));
         reporter.printReport();
     }
 
