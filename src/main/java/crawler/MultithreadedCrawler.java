@@ -28,11 +28,9 @@ public class MultithreadedCrawler {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        MultithreadedCrawler.create().startCrawlingFrom(toLink("https://goshawkdb.io"));
-    }
-
-    private static MultithreadedCrawler create() {
-        return createUsing(new CrawlReporter());
+        CrawlReporter reporter = new CrawlReporter();
+        MultithreadedCrawler.createUsing(reporter).startCrawlingFrom(toLink("https://goshawkdb.io"));
+        reporter.printReport();
     }
 
     public static MultithreadedCrawler createUsing(final CrawlReporter reporter) {

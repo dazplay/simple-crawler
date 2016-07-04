@@ -22,4 +22,9 @@ public class CrawlReporter {
     public void seenInternal(final Link link) {
         internalLinksSeen.add(link);
     }
+
+    public void printReport() {
+        System.out.println("DONE! Crawled: " + crawledLinks.size() + " pages");
+        System.out.println("Crawled: " + crawledLinks);
+    }
 }
