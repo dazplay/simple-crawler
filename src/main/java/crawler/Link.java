@@ -21,6 +21,10 @@ public class Link {
         return url.getHost().equals(other.url.getHost());
     }
 
+    public boolean onDifferentDomainAs(final Link other) {
+        return !onSameDomainAs(other);
+    }
+
     @Override public String toString() {
         return url.toString();
     }

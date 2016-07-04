@@ -29,8 +29,11 @@ public class CrawlTask extends RecursiveAction {
 
         DownloadResult result = downloader.download(link);
         reporter.reportCrawled(link);
-        result.process(this::submitTasksToCrawlUnseenInternalLinksOn);
         result.process(this::reportInternalLinksSeen);
+        result.process(this::reportExternalLinksSeen);
+        result.process(this::reportStaticLinksSeen);
+        result.process(this::submitTasksToCrawlUnseenInternalLinksOn);
+
         log.doneCrawling(id, link);
     }
 
@@ -47,6 +50,16 @@ public class CrawlTask extends RecursiveAction {
         page.getLinksFromTagsOfType("a").stream()
                 .filter(link::onSameDomainAs)
                 .forEach(reporter::seenInternal);
+    }
+
+    private void reportExternalLinksSeen(final Page page) {
+        page.getLinksFromTagsOfType("a").stream()
+                .filter(link::onDifferentDomainAs)
+                .forEach(reporter::seenExternal);
+    }
+
+    private void reportStaticLinksSeen(final Page page) {
+        page.getLinksFromTagsOfType("link").forEach(reporter::seenStatic);
     }
 
 }
