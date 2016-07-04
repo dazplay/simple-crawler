@@ -1,8 +1,25 @@
 package crawler;
 
-import java.net.URL;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CrawlReporter {
-    public Set<URL> crawledLinks;
+    protected final Set<Link> crawledLinks = ConcurrentHashMap.newKeySet();
+    protected final Set<Link> internalLinksSeen = ConcurrentHashMap.newKeySet();
+
+    public boolean hasCrawled(final Link link) {
+        return crawledLinks.contains(link);
+    }
+
+    public boolean notYetCrawled(final Link link) {
+        return !hasCrawled(link);
+    }
+
+    public void reportCrawled(final Link link) {
+        crawledLinks.add(link);
+    }
+
+    public void seenInternal(final Link link) {
+        internalLinksSeen.add(link);
+    }
 }

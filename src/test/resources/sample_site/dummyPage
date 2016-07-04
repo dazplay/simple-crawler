@@ -1,0 +1,7 @@
+<html>
+    <body>
+        <a href="http://myDomain.com/anInternalLink">link1</a>
+        <a href="anotherInternalLink">link2</a>
+        <a href="http://external-from-page1.com">google</a>
+    </body>
+</html>
