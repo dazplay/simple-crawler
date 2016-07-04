@@ -1,6 +1,7 @@
 package crawler;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URL;
 
 import com.google.common.base.Charsets;
@@ -23,9 +24,23 @@ public class CrawlTaskTest {
     private final CrawlReporter reporter = new CrawlReporter();
 
     @Test public void reportsInternalLinksAsSeenWhenScrapedFromPage() {
-        new CrawlTask(linkToCrawl, reporter, dummyDownloader()).compute();
+        new CrawlTask(linkToCrawl, reporter, dummyDownloader(), dummyLogger()).compute();
 
         assertThat(reporter.internalLinksSeen, containsInAnyOrder(scrapedLink1, scrapedLink2));
+    }
+
+    private CrawlerLogger dummyLogger() {
+        return new CrawlerLogger() {
+            @Override public void crawling(final int id, final Link link) {
+            }
+
+            @Override public void doneCrawling(final int id, final Link link) {
+            }
+
+            @Override public PrintStream out() {
+                return null;
+            }
+        };
     }
 
     private Downloader dummyDownloader() {
